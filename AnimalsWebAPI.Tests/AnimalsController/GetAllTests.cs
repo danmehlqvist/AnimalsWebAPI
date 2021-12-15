@@ -27,23 +27,23 @@ namespace AnimalsWebAPI.Tests.AnimalsController
             _testData = new AnimalsControllerTestData();
         }
 
-        [Test]
-        public void ReturnsCorrectAmountOfAnimals()
-        {
-            // Arrange
-            _animalRepoMock.Setup(x => x.GetAll())
-                .Returns(_testData.threeAnimals);
-            _controller = new AnimalController(_animalRepoMock.Object);
+        //[Test]
+        //public void ReturnsCorrectAmountOfAnimals()
+        //{
+        //    // Arrange
+        //    _animalRepoMock.Setup(x => x.GetAll())
+        //        .Returns(_testData.threeAnimals);
+        //    _controller = new AnimalController(_animalRepoMock.Object);
 
-            IActionResult result = _controller.GetAll();
+        //    IActionResult result = _controller.GetAll();
             
-            OkObjectResult okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
+        //    OkObjectResult okResult = result as OkObjectResult;
+        //    Assert.IsNotNull(okResult);
             
-            List<AnimalDTO> animalsFromMock = okResult.Value as List<AnimalDTO>;
-            Assert.IsNotNull(animalsFromMock);
-            Assert.That(animalsFromMock.Count, Is.EqualTo(3));
-        }
+        //    List<AnimalDTO> animalsFromMock = okResult.Value as List<AnimalDTO>;
+        //    Assert.IsNotNull(animalsFromMock);
+        //    Assert.That(animalsFromMock.Count, Is.EqualTo(3));
+        //}
 
         //[Test]
         //public void ReturnsCorrectObjectAtIndexZero()

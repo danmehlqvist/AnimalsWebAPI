@@ -1,8 +1,10 @@
-﻿using AnimalsWebAPI.Data;
+﻿using AnimalsWebAPI.Classes;
+using AnimalsWebAPI.Data;
 using AnimalsWebAPI.Data.Entities;
 using AnimalsWebAPI.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+
 
 namespace AnimalsWebAPI.Repos
 {
@@ -43,13 +45,23 @@ namespace AnimalsWebAPI.Repos
                 .SingleOrDefault(x => x.ID == id);
         }
 
-        public List<Animal> GetAll()
+        public PaginatedResult<AnimalDTO> GetAll(int currentPage, int itemsPerPage)
         {
-            List<Animal> animals = _context
-                .Animals
+            List<Animal> paginatedAnimals = _context.Animals
+                .Skip((currentPage - 1) * itemsPerPage)
+                .Take(itemsPerPage)
                 .Include(a => a.AnimalType)
                 .ToList();
-            return animals;
+
+            List<AnimalDTO> paginatedAnimalDTOs = paginatedAnimals.ToAnimalDTOs();
+
+            int count = _context.Animals.Count();
+
+            return new PaginatedResult<AnimalDTO>(
+                paginatedAnimalDTOs,
+                count,
+                itemsPerPage,
+                currentPage);
         }
 
         public Animal Update(UpdateAnimalDTO animal)

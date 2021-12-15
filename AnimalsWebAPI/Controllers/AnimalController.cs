@@ -23,10 +23,9 @@ namespace AnimalsWebAPI.Controllers
         // blabla/animals?page=1&itemperpage=4
         [HttpGet]
         [Route("")]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery]int currentPage=1, [FromQuery]int itemsPerPage=5)
         {
-            List<AnimalDTO> animals = _animalRepo.GetAll().ToAnimalDTOs();
-            PaginationResult<AnimalDTO> paginatedResult = new PaginationResult<AnimalDTO>(animals, 2, 2);
+            PaginatedResult<AnimalDTO> paginatedResult = _animalRepo.GetAll(currentPage,itemsPerPage);
             return Ok(new { 
                 paginatedResult.CurrentPage, 
                 paginatedResult.TotalPages, 
@@ -37,7 +36,7 @@ namespace AnimalsWebAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult GetByID(int id)
+        public IActionResult GetByID([FromRoute]int id)
         {
             Animal result = _animalRepo.Get(id);
             if (result is null)
